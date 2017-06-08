@@ -34,6 +34,15 @@ public class Node{
 		this.visited = true;
 	}
 
+	public void clearNeighborhood(){
+				this.neighbors = new HashMap<Integer, Node>();
+
+	}
+
+	public Map<Integer ,Node> getNeighbors(){
+				return neighbors;
+	}
+
 	public void showNeighbors(){
 		System.out.printf("%d ->",value);
 		for(Map.Entry<Integer, Node> node : neighbors.entrySet()){
@@ -75,7 +84,20 @@ public class Node{
 			}
 		  }
 	}
-	
+
+	public void buscaProfundidadeByGraph(ArrayList<Node> graph){
+		for (int aux=(graph.size()-1); aux>=0; aux--){
+			System.out.printf("%d ",graph.get(aux).getValue());
+			graph.get(aux).markVisited();
+			for(Map.Entry<Integer, Node> node: graph.get(aux).neighbors.entrySet()){
+				Node neighborNode = node.getValue();
+				if(neighborNode.hasBeenVisited() == false ){
+					neighborNode.buscaProfundidadeByGraph(graph);
+				}
+			}
+		}
+	}
+
 	public Map<Integer, Node> getNeighbors(){
 		return neighbors;
 	}
@@ -103,7 +125,7 @@ public class Node{
 		if(minimumIndex == 3){
 			System.out.printf(" true");
 		}else{
-			 System.out.printf("false");	
+			 System.out.printf("false");
 		}
 	}
 	// endTest
@@ -113,7 +135,7 @@ public class Node{
 		ArrayList<Integer> cost = new ArrayList<Integer>();
 		ArrayList<Node> originNode = new ArrayList<Node>();
 		ArrayList<Node> endNode = new ArrayList<Node>();
-		
+
 		this.markVisited();
 		for(Map.Entry<Integer, Node> node: this.neighbors.entrySet()){
 			originNode.add(this);
@@ -143,7 +165,35 @@ public class Node{
 				endNode.remove(minimumIndex);
 			}
 		}
-		System.out.println(" ");		
+		System.out.println(" ");
 	}
-	//TODO: Grafo Inverso
+	public static void getReversedGraph(ArrayList<Node> nodeList){
+    //creates a new list of nodes that has the same values as the original one
+    ArrayList<Node> reversedGraph = new ArrayList();
+    for (Node node: nodeList){
+        Node newNode = new Node(node.getValue());
+        reversedGraph.add(newNode);
+    }
+
+    //running through the list of adjacency list backwards
+    for (int aux=(nodeList.size()-1); aux>=0; aux--){
+        Node currentNode = nodeList.get(aux);
+        //running through the adjacency list
+        for(int aux2= 0; aux2<currentNode.getNeighbors().size(); aux2++){
+            //here we get a Node from the reversedGraph and place it as
+            //a neighbor in the adjacency list of the reverseGraph
+            for ( Map.Entry<Integer, Node> entry : currentNode.getNeighbors().entrySet()) {
+                Node newNode = new Node(0);
+                newNode = reversedGraph.get(aux2);
+                Integer newWeight = entry.getKey();
+                reversedGraph.get(aux2).addNeighbor(newNode, newWeight);
+
+            }
+        }
+    }
+    //print the reverse graph using a search
+    System.out.println("Busca em profundidade no grafo reverso:");
+    reversedGraph.get(0).buscaProfundidadeByGraph(reversedGraph);
+  }
+	
 }
