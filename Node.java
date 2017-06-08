@@ -76,6 +76,74 @@ public class Node{
 		  }
 	}
 	
-	//TODO: Make Prin
+	public Map<Integer, Node> getNeighbors(){
+		return neighbors;
+	}
+
+	private int checkMinimum(ArrayList<Integer> cost){
+		int minimumValue = 0;// index minimum value
+		for(int i = 1; i < cost.size(); i++){
+			if( cost.get(i) < cost.get(minimumValue) ){
+				minimumValue = i;
+			}
+		}
+		return minimumValue;
+	}
+    // @Test
+	public void checkMinimumTest(){
+		ArrayList<Integer> numbers = new ArrayList<Integer>();
+		numbers.add(1);
+		numbers.add(002);
+		numbers.add(300);
+		numbers.add(-9);
+		numbers.add(3);
+		numbers.add(5);
+
+		int minimumIndex = checkMinimum(numbers);
+		if(minimumIndex == 3){
+			System.out.printf(" true");
+		}else{
+			 System.out.printf("false");	
+		}
+	}
+	// endTest
+
+	//TODO: Make Prim
+	public void prim(){
+		ArrayList<Integer> cost = new ArrayList<Integer>();
+		ArrayList<Node> originNode = new ArrayList<Node>();
+		ArrayList<Node> endNode = new ArrayList<Node>();
+		
+		this.markVisited();
+		for(Map.Entry<Integer, Node> node: this.neighbors.entrySet()){
+			originNode.add(this);
+			cost.add(node.getKey());
+			endNode.add(node.getValue());
+		}
+
+		while(!cost.isEmpty()){
+			int minimumIndex = checkMinimum(cost);
+			Node minimumCostEndNode = endNode.get(minimumIndex);
+
+			if(!minimumCostEndNode.hasBeenVisited()){
+				Node minimumCostOriginNode = originNode.get(minimumIndex);
+				System.out.printf("%d ->%d ",minimumCostOriginNode.getValue(),minimumCostEndNode.getValue());
+				minimumCostOriginNode.markVisited();
+				minimumCostEndNode.markVisited();
+				for(Map.Entry<Integer, Node> node: minimumCostEndNode.neighbors.entrySet()){
+					if(!node.getValue().hasBeenVisited()){
+						originNode.add(minimumCostEndNode);
+						cost.add(node.getKey());
+						endNode.add(node.getValue());
+					}
+				}
+			}else{
+				cost.remove(minimumIndex);
+				originNode.remove(minimumIndex);
+				endNode.remove(minimumIndex);
+			}
+		}
+		System.out.println(" ");		
+	}
 	//TODO: Grafo Inverso
 }

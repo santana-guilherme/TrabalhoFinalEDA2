@@ -1,3 +1,5 @@
+import java.util.*;
+
 class CreateG{
 
 	public static void associateAsNeighbors(Node firstNode, Node secondNode, int weight){ // for bi directional graphs
@@ -18,11 +20,16 @@ class CreateG{
 		secondNode.showNeighbors();
 		thirdNode.showNeighbors();
 		fourthNode.showNeighbors();
+		associateAsNeighbors(fourthNode,thirdNode,18);
+		Node fifthNode = new Node(3);
+		associateAsNeighbors(fifthNode,fourthNode,9);
+		associateAsNeighbors(fifthNode,thirdNode,6);
 		System.out.println("Busca em Profundidade for secondNode");
 		//secondNode.bFS();
 		//secondNode.buscaProfundidade();
-		fourthNode.buscaProfundidade();
-
+		//fourthNode.buscaProfundidade();
+		System.out.println(" ");
+		secondNode.prim();
 	}
 
 }
