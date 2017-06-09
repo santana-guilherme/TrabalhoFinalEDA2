@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.ArrayList;
 
 class CreateG{
 
@@ -30,17 +29,14 @@ class CreateG{
 		//secondNode.buscaProfundidade();
 		//fourthNode.buscaProfundidade();
 		System.out.println(" ");
-		secondNode.prim();
 
 		//creating a list of nodes (a graph)
-		ArrayList <Node> graph = new ArrayList<Node>();
-		graph.add(firstNode);
-		graph.add(secondNode);
-		graph.add(thirdNode);
-		graph.add(fourthNode);
-
-		fourthNode.getReversedGraph(graph);
-
+		Graph firstGraph = new Graph();
+		firstGraph.addNode(firstNode);
+		firstGraph.addNode(secondNode);
+		firstGraph.addNode(thirdNode);
+		firstGraph.addNode(fourthNode);
+		firstGraph.prim();
 	}
 
 }
