@@ -97,11 +97,7 @@ public class Node{
 			}
 		}
 	}
-
-	public Map<Integer, Node> getNeighbors(){
-		return neighbors;
-	}
-
+		
 	private int checkMinimum(ArrayList<Integer> cost){
 		int minimumValue = 0;// index minimum value
 		for(int i = 1; i < cost.size(); i++){

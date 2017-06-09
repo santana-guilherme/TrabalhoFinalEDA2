@@ -33,7 +33,7 @@ class CreateG{
 		secondNode.prim();
 
 		//creating a list of nodes (a graph)
-		ArrayList <Node> graph = new ArrayList();
+		ArrayList <Node> graph = new ArrayList<Node>();
 		graph.add(firstNode);
 		graph.add(secondNode);
 		graph.add(thirdNode);
