@@ -68,6 +68,8 @@ class CreateG{
 		
 		//testing new nodes search
 		newGraph.getNodeList().get(0).buscaProfundidade();
+		
+		JGraphXFrame.createFrame(newGraph);
 
 		
 		
