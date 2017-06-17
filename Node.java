@@ -2,12 +2,13 @@
 import java.util.*;
 public class Node{
 
-	private int value;
+	private int id;
+	private String name;
 	private boolean visited;
 	private Map<Integer ,Node> neighbors;
 
 	public Node(int value){
-		setValue(value);
+		setNodeId(value);
 		this.visited = false;
 		neighbors = new HashMap<Integer ,Node>();
 	}
@@ -15,13 +16,21 @@ public class Node{
 	public void  addNeighbor(Node node, int weight){
 		neighbors.put(weight,node);
 	}
-
-	public void setValue(int value){
-		this.value = value;
+	
+	public String getName() {
+		return name;
 	}
 
-	public int getValue(){
-		return this.value;
+	public void setName(String name) {
+		this.name = name;
+	}	
+
+	public void setNodeId(int value){
+		this.id = value;
+	}
+
+	public int getNodeId(){
+		return this.id;
 	}
 
 	public boolean hasBeenVisited(){
@@ -42,15 +51,15 @@ public class Node{
 	}
 
 	public void showNeighbors(){
-		System.out.printf("%d ->",value);
+		System.out.printf("%d ->",id);
 		for(Map.Entry<Integer, Node> node : neighbors.entrySet()){
-			System.out.printf("%d ",node.getValue().getValue() );
+			System.out.printf("%d ",node.getValue().getNodeId() );
 		}
 		System.out.printf("\n");
 	}
 
 	public void bFS(){
-		System.out.printf("%d ->",this.getValue());
+		System.out.printf("%d ->",this.getNodeId());
 		Stack<Node> stack = new Stack<Node>();
 		stack.push(this);
 		this.markVisited();
@@ -63,7 +72,7 @@ public class Node{
 				if(neighborNode.hasBeenVisited() == false){
 					neighborNode.markVisited();
 					stack.push(neighborNode);
-					System.out.printf("%d ",neighborNode.getValue());
+					System.out.printf("%d ",neighborNode.getNodeId());
 				}
 			}
 			System.out.printf("|");
@@ -72,7 +81,7 @@ public class Node{
 	}
 
 	public void buscaProfundidade(){
-		System.out.printf("%d ",this.getValue());
+		System.out.printf("%s ",this.getName());
 		this.markVisited();
 		for(Map.Entry<Integer, Node> node: this.neighbors.entrySet()){
 			Node neighborNode = node.getValue();
@@ -84,7 +93,7 @@ public class Node{
 
 	public void buscaProfundidadeByGraph(ArrayList<Node> graph){
 		for (int aux=(graph.size()-1); aux>=0; aux--){
-			System.out.printf("%d ",graph.get(aux).getValue());
+			System.out.printf("%d ",graph.get(aux).getNodeId());
 			graph.get(aux).markVisited();
 			for(Map.Entry<Integer, Node> node: graph.get(aux).neighbors.entrySet()){
 				Node neighborNode = node.getValue();
@@ -93,5 +102,7 @@ public class Node{
 				}
 			}
 		}
-	}	
+	}
+
+
 }

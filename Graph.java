@@ -22,6 +22,24 @@ class Graph{
 		}
 		return minimumValue;
 	}
+	
+	public Node findNodebyId(int id){
+		for(int aux=0; aux<nodeList.size(); aux++){
+			if (nodeList.get(aux).getNodeId() == id)
+				return nodeList.get(aux);
+		}
+		
+		return null;
+	}
+	
+	public Node findNodebyName(String name){
+		for(int aux=0; aux<nodeList.size(); aux++){
+			if (nodeList.get(aux).getName().equalsIgnoreCase(name))
+				return nodeList.get(aux);
+		}
+		
+		return null;
+	}
 
     // @Test
 	public void checkMinimumTest(){
@@ -63,7 +81,7 @@ class Graph{
 
 			if(!minimumCostEndNode.hasBeenVisited()){
 				Node minimumCostOriginNode = originNode.get(minimumIndex);
-				System.out.printf("%d ->%d ",minimumCostOriginNode.getValue(),minimumCostEndNode.getValue());
+				System.out.printf("%d ->%d ",minimumCostOriginNode.getNodeId(),minimumCostEndNode.getNodeId());
 				minimumCostOriginNode.markVisited();
 				minimumCostEndNode.markVisited();
 				for(Map.Entry<Integer, Node> node: minimumCostEndNode.getNeighbors().entrySet()){
@@ -85,7 +103,7 @@ class Graph{
     //creates a new list of nodes that has the same values as the original one
     ArrayList<Node> reversedGraph = new ArrayList<Node>();
     for (Node node: this.getNodeList() ){
-        Node newNode = new Node(node.getValue());
+        Node newNode = new Node(node.getNodeId());
         reversedGraph.add(newNode);
     }
 

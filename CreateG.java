@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 class CreateG{
@@ -8,6 +11,68 @@ class CreateG{
 	}
 
 	public static void main(String[] args){
+		
+		Graph newGraph = new Graph();
+		
+		//read the Nodes.txt files to create nodes a add them to the Graph
+		try {
+		      FileReader arq = new FileReader("Nodes.txt");
+		      BufferedReader lerArq = new BufferedReader(arq);
+		 
+		      String names = lerArq.readLine();
+		      int aux = 0;
+		      while (names != null) {
+		        Node newNode = new Node (aux);
+		        newNode.setName(names);
+		        newGraph.addNode(newNode); 
+
+		        names = lerArq.readLine();
+		        aux++;
+		      }
+		 
+		      arq.close();
+		 } catch (IOException e) {
+		        System.err.printf("Erro na abertura do arquivo: %s.\n",
+		          e.getMessage());
+		 }
+		
+		//read AdjacencyList to find each neighbor
+		try {
+			
+		      FileReader arq = new FileReader("AdjacencyList.txt");
+		      BufferedReader lerArq = new BufferedReader(arq);
+		 
+		      String line = lerArq.readLine();
+		      int aux = 0;
+		      while (line != null) {
+		    	  
+	    		  String [] neiborNames = line.split("-");
+	    		  
+	    		  for(int aux2=0; aux2<neiborNames.length; aux2++){
+	    			  
+	    			  //find the neighbor by it name, and add it to the adjacency list using weight = 0
+	    			  newGraph.getNodeList().get(aux).addNeighbor(newGraph.findNodebyName(neiborNames[aux2]), 0);
+	    			  
+	    		  }
+	    		  
+	    		  line = lerArq.readLine();
+	    		  aux++;
+		      }
+		 
+		      arq.close();
+		      
+		 } catch (IOException e) {
+		        System.err.printf("Erro na abertura do arquivo: %s.\n",
+		          e.getMessage());
+		 }
+		
+		//testing new nodes search
+		newGraph.getNodeList().get(0).buscaProfundidade();
+
+		
+		
+		/*
+		
 		Node firstNode = new Node(5);
 		Node secondNode = new Node(7);
 		associateAsNeighbors(firstNode,secondNode,3);
@@ -37,6 +102,8 @@ class CreateG{
 		firstGraph.addNode(thirdNode);
 		firstGraph.addNode(fourthNode);
 		firstGraph.prim();
+		
+		*/
 	}
 
 }
