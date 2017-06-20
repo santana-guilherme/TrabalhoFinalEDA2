@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
@@ -18,6 +20,8 @@ public class JGraphXFrame extends JFrame{
 	    
 	    */
 	    
+	    ArrayList<Object> plottedNodes = new ArrayList<Object>();
+	    
 	    //plotting the nodes
 	    int x = 0, y = 0;
 	    for(int aux=0; aux<newGraph.getNodeList().size(); aux++){
@@ -31,10 +35,22 @@ public class JGraphXFrame extends JFrame{
 	    		y = 0;
 	    	}
 	    	
+	    	plottedNodes.add(plottedNode);
 	    }
 	    
-	    //TODO: Plot the edges
-	    
+	    //plotting edges
+	    for(int aux=0; aux<newGraph.getNodeList().size(); aux++){
+	    	Node currentNode = newGraph.getNodeList().get(aux);
+	    	for(int aux2=0; aux2<currentNode.getNeighbors().size(); aux2++){
+	    		//finding the name of the neighbor and searching for it in the list of plotted nodes
+	    		String neighborName = currentNode.getNeighbors().get(aux2).getName();
+	    		int neighborIndex;
+	    		neighborIndex = newGraph.findNodebyName(neighborName).getNodeId();
+	    		//inserting the edge
+	    		graph.insertEdge(defaultParent, null, "Test", plottedNodes.get(aux), plottedNodes.get(neighborIndex));
+	    		//TODO: replace "Test" by the name of relation
+	    	}
+	    }
 	    
 	    graph.getModel().endUpdate();
 	    mxGraphComponent graphComponent = new mxGraphComponent(graph);
