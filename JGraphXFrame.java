@@ -40,10 +40,24 @@ public class JGraphXFrame extends JFrame{
 	    
 	    //plotting edges
 	    for(int aux=0; aux<newGraph.getNodeList().size(); aux++){
+	    	Node source = newGraph.getNodeList().get(aux);
+	    	for(int aux2=0; aux2<source.getNeighbors().size(); aux2++){
+	    		String relation = source.getNeighbors().get(aux2).getRelation();
+	    		int targetId = source.getNeighbors().get(aux2).getTarget().getNodeId();
+	    		System.out.println(targetId);
+	    		graph.insertEdge(defaultParent, null, relation, plottedNodes.get(aux), plottedNodes.get(targetId));
+	    		
+	    	}
+	    	
+	    }
+	    
+	    
+	    /*
+	    for(int aux=0; aux<newGraph.getNodeList().size(); aux++){
 	    	Node currentNode = newGraph.getNodeList().get(aux);
 	    	for(int aux2=0; aux2<currentNode.getNeighbors().size(); aux2++){
 	    		//finding the name of the neighbor and searching for it in the list of plotted nodes
-	    		String neighborName = currentNode.getNeighbors().get(aux2).getName();
+	    		String neighborName = currentNode.getNeighbors().get(aux2).getTarget().getName();
 	    		int neighborIndex;
 	    		neighborIndex = newGraph.findNodebyName(neighborName).getNodeId();
 	    		//inserting the edge
@@ -51,7 +65,7 @@ public class JGraphXFrame extends JFrame{
 	    		//TODO: replace "Test" by the name of relation
 	    	}
 	    }
-	    
+	    */
 	    graph.getModel().endUpdate();
 	    mxGraphComponent graphComponent = new mxGraphComponent(graph);
 	    getContentPane().add(graphComponent);

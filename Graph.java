@@ -2,25 +2,35 @@ import java.util.*;
 class Graph{
 	
 	private ArrayList<Node> nodeList;
+	private ArrayList<Edge> edgeList;
 
 	public Graph(){
 		nodeList = new ArrayList<Node>();
+		edgeList = new ArrayList<Edge>();
+	}
+
+	public ArrayList<Edge> getEdgeList() {
+		return edgeList;
+	}
+
+	public void setEdgeList(ArrayList<Edge> edgeList) {
+		this.edgeList = edgeList;
+	}
+
+	public void setNodeList(ArrayList<Node> nodeList) {
+		this.nodeList = nodeList;
 	}
 
 	public void addNode(Node node){
-		nodeList.add(node);
+		this.nodeList.add(node);
 	}
+	
 	public ArrayList<Node> getNodeList(){
 		return nodeList;
 	}
-	private int checkMinimum(ArrayList<Integer> cost){
-		int minimumValue = 0;// index minimum value
-		for(int i = 1; i < cost.size(); i++){
-			if( cost.get(i) < cost.get(minimumValue) ){
-				minimumValue = i;
-			}
-		}
-		return minimumValue;
+	
+	public void addEdge(Edge newEdge){
+		this.edgeList.add(newEdge);
 	}
 	
 	public Node findNodebyId(int id){
@@ -40,6 +50,21 @@ class Graph{
 		
 		return null;
 	}
+	
+	
+	//TODO rebuild these methods to the new graph structure
+
+	/*
+	private int checkMinimum(ArrayList<Integer> cost){
+		int minimumValue = 0;// index minimum value
+		for(int i = 1; i < cost.size(); i++){
+			if( cost.get(i) < cost.get(minimumValue) ){
+				minimumValue = i;
+			}
+		}
+		return minimumValue;
+	}
+	
 
     // @Test
 	public void checkMinimumTest(){
@@ -128,4 +153,5 @@ class Graph{
     reversedGraph.get(0).buscaProfundidadeByGraph(reversedGraph);
   }
 
+	*/
 }

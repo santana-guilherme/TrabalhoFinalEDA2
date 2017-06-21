@@ -5,16 +5,16 @@ public class Node{
 	private int id;
 	private String name;
 	private boolean visited;
-	private Map<Integer ,Node> neighbors;
+	private ArrayList <Edge> neighbors;
 
 	public Node(int value){
 		setNodeId(value);
 		this.visited = false;
-		neighbors = new HashMap<Integer ,Node>();
+		neighbors = new ArrayList<Edge>();
 	}
 
-	public void  addNeighbor(Node node, int weight){
-		neighbors.put(weight,node);
+	public void  addNeighbor(Edge newNeighbor){
+		neighbors.add(newNeighbor);
 	}
 	
 	public String getName() {
@@ -42,14 +42,17 @@ public class Node{
 	}
 
 	public void clearNeighborhood(){
-				this.neighbors = new HashMap<Integer, Node>();
+				this.neighbors = new ArrayList <Edge>();
 
 	}
 
-	public Map<Integer ,Node> getNeighbors(){
+	public ArrayList<Edge> getNeighbors(){
 				return neighbors;
 	}
+	
+	//TODO rebuild these methods to the new graph structure
 
+	/*
 	public void showNeighbors(){
 		System.out.printf("%d ->",id);
 		for(Map.Entry<Integer, Node> node : neighbors.entrySet()){
@@ -104,5 +107,5 @@ public class Node{
 		}
 	}
 
-
+	*/
 }
