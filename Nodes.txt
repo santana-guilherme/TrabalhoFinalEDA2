@@ -1,7 +1,12 @@
-Ned Stark
-Jon Snow
+Brandon, o Construtor
+Torrhen Stark
+Rickard Stark
+Eddard Stark
+Benjen Stark
+Lyanna Stark
+John Snow
 Robb Stark
 Sansa Stark
-Robert Baratheon
-Joffrey Baratheon
-Mycella Baratheon
+Arya Stark
+Bran Stark
+Rickon Stark

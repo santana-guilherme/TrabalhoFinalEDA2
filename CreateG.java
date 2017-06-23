@@ -80,7 +80,7 @@ class CreateG{
 		
 		JGraphXFrame.createFrame(newGraph);
 
-		
+		newGraph.getNodeList().get(0).buscaProfundidade();
 		
 		/*
 		

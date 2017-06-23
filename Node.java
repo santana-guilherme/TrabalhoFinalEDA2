@@ -1,15 +1,19 @@
 //Undirected grap
 import java.util.*;
+
+import com.mxgraph.view.mxGraph;
 public class Node{
 
 	private int id;
 	private String name;
 	private boolean visited;
+	private boolean plotted;
 	private ArrayList <Edge> neighbors;
 
 	public Node(int value){
 		setNodeId(value);
 		this.visited = false;
+		this.plotted = false;
 		neighbors = new ArrayList<Edge>();
 	}
 
@@ -33,6 +37,14 @@ public class Node{
 		return this.id;
 	}
 
+	public boolean isPlotted() {
+		return plotted;
+	}
+
+	public void setPlotted(boolean plotted) {
+		this.plotted = plotted;
+	}
+
 	public boolean hasBeenVisited(){
 		return this.visited;
 	}
@@ -48,6 +60,16 @@ public class Node{
 
 	public ArrayList<Edge> getNeighbors(){
 				return neighbors;
+	}
+	
+	public boolean isNeighbor(Node son){
+		
+		for (int i = 0; i<this.neighbors.size(); i++){
+			if ((son.equals(this.neighbors.get(i).getTarget()))){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	//TODO rebuild these methods to the new graph structure
@@ -83,16 +105,6 @@ public class Node{
 		System.out.printf("\n");
 	}
 
-	public void buscaProfundidade(){
-		System.out.printf("%s ",this.getName());
-		this.markVisited();
-		for(Map.Entry<Integer, Node> node: this.neighbors.entrySet()){
-			Node neighborNode = node.getValue();
-			if(neighborNode.hasBeenVisited() == false ){
-				neighborNode.buscaProfundidade();
-			}
-		  }
-	}
 
 	public void buscaProfundidadeByGraph(ArrayList<Node> graph){
 		for (int aux=(graph.size()-1); aux>=0; aux--){
@@ -108,4 +120,32 @@ public class Node{
 	}
 
 	*/
+	
+	public void buscaProfundidade(){
+		System.out.printf(this.getName());
+		this.markVisited();
+		for(int i =0; i<this.getNeighbors().size(); i++){
+			Node neighborNode = this.getNeighbors().get(i).getTarget();
+			if(neighborNode.hasBeenVisited() == false ){
+				System.out.println(" -> ");
+				neighborNode.buscaProfundidade();
+			}
+		}
+	}
+	
+	public void plotNodesAndItsEdgesByBFS(mxGraph graph, Object defaultParent, int x, int y, ArrayList<Object> plottedNodes){
+		Object plottedNode = graph.insertVertex(defaultParent, null,this.getName(), x, y, 130, 30);
+		this.setPlotted(true);
+		plottedNodes.add(plottedNode);
+		y = y + 70;
+		
+		for (int i =0; i<this.getNeighbors().size(); i++){
+			if (this.getNeighbors().get(i).getTarget().plotted == false){
+				this.getNeighbors().get(i).getTarget().plotNodesAndItsEdgesByBFS(graph, defaultParent, x, y, plottedNodes);
+				x = x + 200;
+			}
+			
+		}
+
+	}
 }
