@@ -2,6 +2,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import javax.swing.JOptionPane;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 class CreateG{
 
@@ -78,12 +84,41 @@ class CreateG{
 		//testing new nodes search
 		//newGraph.getNodeList().get(0).buscaProfundidade();
 		
-		JGraphXFrame.createFrame(newGraph);
+		// Simple Menu
 
-		//newGraph.getNodeList().get(0).buscaProfundidade();
-		//int value = newGraph.distanceBetweenNodes(newGraph.findNodebyId(3),newGraph.findNodebyId(0));
-		//System.out.printf("Origin node: %s, End node: %s, Distance: %d\n",newGraph.findNodebyId(3).getName(),newGraph.findNodebyId(0).getName(),value);
-		newGraph.prim();
+		JPanel panel = new JPanel();
+		JButton plotGraphButton = new JButton("Plotar Gráfico");
+		JButton minimumTreeButton = new JButton("Árvore Mínima");
+		JButton searchDistanceButton = new JButton("Distância entre nós");
+
+		plotGraphButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				JGraphXFrame.createFrame(newGraph);
+			}
+		});
+		minimumTreeButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				newGraph.prim();
+			}
+		});
+		searchDistanceButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				int value = newGraph.distanceBetweenNodes(newGraph.findNodebyId(3),newGraph.findNodebyId(0));
+				System.out.printf("Origin node: %s, End node: %s, Distance: %d\n",newGraph.findNodebyId(3).getName(),newGraph.findNodebyId(0).getName(),value);
+
+			}
+		});
+
+
+		panel.add(plotGraphButton);
+		panel.add(minimumTreeButton);
+		panel.add(searchDistanceButton);
+
+		JFrame mainWindow = new JFrame("TF EDA 2");
+		mainWindow.add(panel);
+		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainWindow.pack();
+		mainWindow.setVisible(true);
 		/*
 		
 		Node firstNode = new Node(5);

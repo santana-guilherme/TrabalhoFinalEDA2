@@ -67,7 +67,7 @@ public class JGraphXFrame extends JFrame{
 	
 	public static void createFrame(Graph newGraph) {
 		JGraphXFrame frame = new JGraphXFrame(newGraph);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(1000, 700);
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
