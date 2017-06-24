@@ -80,8 +80,10 @@ class CreateG{
 		
 		JGraphXFrame.createFrame(newGraph);
 
-		newGraph.getNodeList().get(0).buscaProfundidade();
-		
+		//newGraph.getNodeList().get(0).buscaProfundidade();
+		//int value = newGraph.distanceBetweenNodes(newGraph.findNodebyId(3),newGraph.findNodebyId(0));
+		//System.out.printf("Origin node: %s, End node: %s, Distance: %d\n",newGraph.findNodebyId(3).getName(),newGraph.findNodebyId(0).getName(),value);
+		newGraph.prim();
 		/*
 		
 		Node firstNode = new Node(5);
