@@ -16,21 +16,18 @@ public class JGraphXFrame extends JFrame{
 	    ArrayList<Object> plottedNodes = new ArrayList<Object>();
 
 	    //plotting the nodes
-	    int x = 0, y =0;
+	    int [] x = {0, 0, 0, 0, 0};
+	    int generation = 0;
+	    int y =0;
 	    
 	    for(int aux=0; aux<newGraph.getNodeList().size(); aux++){
 	    	String currentNodeName = new String();
 	    	currentNodeName = newGraph.getNodeList().get(aux).getName();
-	    	
-		    if (aux > 0 && newGraph.areNodesBrothers(newGraph.getNodeList().get(aux-1), newGraph.getNodeList().get(aux))){
-		    	x = x + 150;
-		    		
-		    }else{
-		    	x = 0;
-		    	y = y + 90;
-		    }
 
-	    	Object plottedNode = graph.insertVertex(defaultParent, null,currentNodeName, x, y, 130, 30);
+	    	generation = newGraph.getNodeList().get(aux).getGeneration();
+	    	y = generation*130;
+	    	x [generation]= x[generation] + 150;
+	    	Object plottedNode = graph.insertVertex(defaultParent, null,currentNodeName, x[generation], y, 130, 30);
 	    	
 	    	plottedNodes.add(plottedNode);
 
@@ -59,11 +56,9 @@ public class JGraphXFrame extends JFrame{
 	    graph.setCellsResizable(false);
 	    graph.setCellsSelectable(true); 
 	    graph.setEnabled(true); 
-	     
-	    graphComponent.setConnectable(false); // Inhibit edge creation in the graph.
+	    graphComponent.setConnectable(false);
 	}
 	
-
 	
 	public static void createFrame(Graph newGraph) {
 		JGraphXFrame frame = new JGraphXFrame(newGraph);

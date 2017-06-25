@@ -51,22 +51,8 @@ class Graph{
 		return null;
 	}
 	
-	public boolean areNodesBrothers(Node a, Node b){
-		Node parent1 = new Node(0);
-		Node parent2 = new Node(0);
-		for (int aux=0; aux<this.getEdgeList().size(); aux++){
-			if(this.getEdgeList().get(aux).getTarget().equals(a)){
-				parent1 = this.getEdgeList().get(aux).getSource();
-				break;
-			}
-		}
-		for (int aux=0; aux<this.getEdgeList().size(); aux++){
-			if(this.getEdgeList().get(aux).getTarget().equals(b)){
-				parent2 = this.getEdgeList().get(aux).getSource();
-				break;
-			}
-		}
-		if (parent1.equals(parent2)){
+	public boolean areNodesInTheSameGeneration(Node a, Node b){
+		if(a.getGeneration() == b.getGeneration()){
 			return true;
 		}
 		return false;
@@ -118,8 +104,8 @@ class Graph{
     // @Test
 	public void checkMinimumTest(){
 		ArrayList<Edge> numbers = new ArrayList<Edge>();
-		Node source = new Node(1);
-		Node end = new Node(2);
+		Node source = new Node(1, 0);
+		Node end = new Node(2, 0);
 		numbers.add(new Edge(source,end,"teste"));
 		numbers.add(new Edge(source,end,"teste"));
 		numbers.add(new Edge(source,end,"teste"));

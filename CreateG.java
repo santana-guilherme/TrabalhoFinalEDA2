@@ -21,14 +21,18 @@ class CreateG{
 		      FileReader arq = new FileReader("Nodes.txt");
 		      BufferedReader lerArq = new BufferedReader(arq);
 		 
-		      String names = lerArq.readLine();
+		      String nodeInfo = lerArq.readLine();
 		      int aux = 0;
-		      while (names != null) {
-		        Node newNode = new Node (aux);
-		        newNode.setName(names);
+		      while (nodeInfo != null) {
+		    	String splittedNodeInfo[] = nodeInfo.split("-");
+		    	//splittedNodeInfo[0] = name
+		    	//splittedNodeInfo[1] = generation
+		        Node newNode = new Node (aux, 0);
+		        newNode.setName(splittedNodeInfo[0]);
+		        newNode.setGeneration(Integer.parseInt(splittedNodeInfo[1]));
 		        newGraph.addNode(newNode); 
 
-		        names = lerArq.readLine();
+		        nodeInfo = lerArq.readLine();
 		        aux++;
 		      }
 		 
@@ -119,39 +123,7 @@ class CreateG{
 		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainWindow.pack();
 		mainWindow.setVisible(true);
-		/*
-		
-		Node firstNode = new Node(5);
-		Node secondNode = new Node(7);
-		associateAsNeighbors(firstNode,secondNode,3);
-		Node thirdNode = new Node(10);
-		associateAsNeighbors(secondNode,thirdNode,7);
-		associateAsNeighbors(thirdNode,firstNode,10);
-		Node fourthNode = new Node(15);
-		associateAsNeighbors(fourthNode,firstNode,5);
-		firstNode.showNeighbors();
-		secondNode.showNeighbors();
-		thirdNode.showNeighbors();
-		fourthNode.showNeighbors();
-		associateAsNeighbors(fourthNode,thirdNode,18);
-		Node fifthNode = new Node(3);
-		associateAsNeighbors(fifthNode,fourthNode,9);
-		associateAsNeighbors(fifthNode,thirdNode,6);
-		System.out.println("Busca em Profundidade for secondNode");
-		//secondNode.bFS();
-		//secondNode.buscaProfundidade();
-		//fourthNode.buscaProfundidade();
-		System.out.println(" ");
 
-		//creating a list of nodes (a graph)
-		Graph firstGraph = new Graph();
-		firstGraph.addNode(firstNode);
-		firstGraph.addNode(secondNode);
-		firstGraph.addNode(thirdNode);
-		firstGraph.addNode(fourthNode);
-		firstGraph.prim();
-		
-		*/
 	}
 
 }

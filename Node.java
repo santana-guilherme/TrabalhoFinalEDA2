@@ -1,17 +1,18 @@
-//Undirected grap
 import java.util.*;
-
 import com.mxgraph.view.mxGraph;
+
 public class Node{
 
 	private int id;
 	private String name;
 	private boolean visited;
 	private boolean plotted;
+	private int generation; //the generation he belongs on the family tree
 	private ArrayList <Edge> neighbors;
 
-	public Node(int value){
+	public Node(int value, int generation){
 		setNodeId(value);
+		setGeneration(generation);
 		this.visited = false;
 		this.plotted = false;
 		neighbors = new ArrayList<Edge>();
@@ -37,6 +38,14 @@ public class Node{
 		return this.id;
 	}
 
+	public int getGeneration() {
+		return generation;
+	}
+
+	public void setGeneration(int generation) {
+		this.generation = generation;
+	}
+	
 	public boolean isPlotted() {
 		return plotted;
 	}
