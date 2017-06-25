@@ -99,15 +99,17 @@ public class Node{
 
 	*/
 	
-	public void bFS(){
-		
-		System.out.println(this.getName());
+	public String bFS(){
+		String bfsResult = "BFS:\n"	;
+		bfsResult += String.format("%s, ",this.getName());
 		Stack<Node> stack = new Stack<Node>();
 		stack.push(this);
 		this.markVisited();
 		
+		bfsResult += "\n";
 		while(!stack.empty()){
 			
+			bfsResult += "\n";
 			Node stackNode = stack.pop();
 			for(int aux=0; aux<stackNode.getNeighbors().size(); aux++){
 				
@@ -115,10 +117,11 @@ public class Node{
 				if(neighborNode.hasBeenVisited() == false){
 					stack.push(neighborNode);
 					neighborNode.markVisited();
-					System.out.println(neighborNode.getName());
+					bfsResult += String.format("%s, ",neighborNode.getName());
 				}
 			}
 		}
+		return bfsResult;
 	}
 	
 	public void buscaProfundidade(){

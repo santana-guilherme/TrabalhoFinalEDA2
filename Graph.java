@@ -134,12 +134,9 @@ class Graph{
 	// endTest
 
 
-	public void prim(){
-		if(nodeList.isEmpty()){return;}
-		ArrayList<Integer> cost = new ArrayList<Integer>();
-		ArrayList<Node> originNode = new ArrayList<Node>();
-		ArrayList<Node> endNode = new ArrayList<Node>();
-
+	public String prim(){
+		if(nodeList.isEmpty()){return null;}
+		String pathMinimumTree = "Prim:\n";
 		ArrayList<Edge> nodes = new ArrayList<Edge>();
 
 		Node firstNode = nodeList.get(0);
@@ -155,7 +152,7 @@ class Graph{
 
 			if(!minimumCostEndNode.hasBeenVisited()){
 				Node minimumCostOriginNode = nodes.get(minimumIndex).getSource();
-				System.out.printf("%s ->%s ",minimumCostOriginNode.getName(),minimumCostEndNode.getName());
+				pathMinimumTree += String.format("%s ->%s\n",minimumCostOriginNode.getName(),minimumCostEndNode.getName());
 				minimumCostOriginNode.markVisited();
 				minimumCostEndNode.markVisited();
 				for(Edge node: minimumCostEndNode.getNeighbors()){
@@ -167,7 +164,8 @@ class Graph{
 				nodes.remove(minimumIndex);
 			}
 		}
-		System.out.println(" ");
+		pathMinimumTree += " ";
+		return pathMinimumTree;
 	}
 
 	public void resetGraph(){ // temporary function

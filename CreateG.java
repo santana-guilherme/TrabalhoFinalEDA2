@@ -101,7 +101,8 @@ class CreateG{
 		});
 		minimumTreeButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				newGraph.prim();
+				String primPath = newGraph.prim();
+				JOptionPane.showMessageDialog(null,primPath);
 				newGraph.resetGraph();
 			}
 		});
@@ -111,7 +112,8 @@ class CreateG{
 				String seekNodeName = JOptionPane.showInputDialog(null,"Nó destino:","Benjen Stark");
 				if(originNodeName != null && seekNodeName != null){
 					int value = newGraph.distanceBetweenNodes(newGraph.findNodebyName(originNodeName),newGraph.findNodebyName(seekNodeName));
-					System.out.printf("Origin node: %s, End node: %s, Distance: %d\n",newGraph.findNodebyName(originNodeName).getName(),newGraph.findNodebyName(seekNodeName).getName(),value);
+					String msg = String.format("Origin node: %s\nEnd node: %s\nDistance: %d\n",newGraph.findNodebyName(originNodeName).getName(),newGraph.findNodebyName(seekNodeName).getName(),value);
+					JOptionPane.showMessageDialog(null,msg);
 				}
 				newGraph.resetGraph();
 			}
@@ -119,7 +121,8 @@ class CreateG{
 		bFSButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				String originNodeName = JOptionPane.showInputDialog(null, "Nó de origem", "Torrhen Stark");
-				newGraph.findNodebyName(originNodeName).bFS();;
+				String msg = newGraph.findNodebyName(originNodeName).bFS();
+				JOptionPane.showMessageDialog(null,msg);
 				newGraph.resetGraph();
 			}
 			
