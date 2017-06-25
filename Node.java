@@ -124,16 +124,17 @@ public class Node{
 		return bfsResult;
 	}
 	
-	public void buscaProfundidade(){
-		System.out.printf(this.getName());
+	public String buscaProfundidade(){
+		String dfsResult = "";
+		dfsResult += String.format("%s, ",this.getName());
 		this.markVisited();
 		for(int i =0; i<this.getNeighbors().size(); i++){
 			Node neighborNode = this.getNeighbors().get(i).getTarget();
 			if(neighborNode.hasBeenVisited() == false ){
-				System.out.println(" -> ");
-				neighborNode.buscaProfundidade();
+				dfsResult += neighborNode.buscaProfundidade();
 			}
 		}
+		return dfsResult;
 	}
 	
 	public void plotNodesAndItsEdgesByBFS(mxGraph graph, Object defaultParent, int x, int y, ArrayList<Object> plottedNodes){

@@ -93,7 +93,7 @@ class Graph{
 				}
 			}
 		}
-		return 0;
+		return -1;
 	}
 
 	//TODO rebuild these methods to the new graph structure

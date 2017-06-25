@@ -93,6 +93,7 @@ class CreateG{
 		JButton minimumTreeButton = new JButton("Árvore Mínima");
 		JButton searchDistanceButton = new JButton("Distância entre nós");
 		JButton bFSButton = new JButton ("Busca em Largura");
+		JButton dFSButton = new JButton("Busca em Profundidade");
 
 		plotGraphButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -112,7 +113,11 @@ class CreateG{
 				String seekNodeName = JOptionPane.showInputDialog(null,"Nó destino:","Benjen Stark");
 				if(originNodeName != null && seekNodeName != null){
 					int value = newGraph.distanceBetweenNodes(newGraph.findNodebyName(originNodeName),newGraph.findNodebyName(seekNodeName));
-					String msg = String.format("Origin node: %s\nEnd node: %s\nDistance: %d\n",newGraph.findNodebyName(originNodeName).getName(),newGraph.findNodebyName(seekNodeName).getName(),value);
+					String msg;
+					if(value == -1)
+						msg = "There are no conection between this two nodes";
+					else
+						msg = String.format("Origin node: %s\nEnd node: %s\nDistance: %d\n",originNodeName,seekNodeName,value);
 					JOptionPane.showMessageDialog(null,msg);
 				}
 				newGraph.resetGraph();
@@ -127,12 +132,26 @@ class CreateG{
 			}
 			
 		});
+		dFSButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String targetNode = JOptionPane.showInputDialog(null,"Nó:", "Torrhen Stark");
+				if(!targetNode.isEmpty()){
+					Node node = newGraph.findNodebyName(targetNode);
+					String dfs = node.buscaProfundidade();
+					JOptionPane.showMessageDialog(null,dfs);
+					newGraph.resetGraph();
+				}else{
+					JOptionPane.showMessageDialog(null,"É necessário inserir o nome de um nó");
+				}
 
+			}
+		});
 
 		panel.add(plotGraphButton);
 		panel.add(minimumTreeButton);
 		panel.add(searchDistanceButton);
 		panel.add(bFSButton);
+		panel.add(dFSButton);
 
 		JFrame mainWindow = new JFrame("TF EDA 2");
 		mainWindow.add(panel);
