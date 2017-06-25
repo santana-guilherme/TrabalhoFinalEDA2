@@ -85,8 +85,6 @@ class CreateG{
 		          e.getMessage());
 		 }
 		
-		//testing node bFS
-		newGraph.getNodeList().get(0).bFS();
 		
 		// Simple Menu
 
@@ -94,6 +92,7 @@ class CreateG{
 		JButton plotGraphButton = new JButton("Plotar Grafo");
 		JButton minimumTreeButton = new JButton("Árvore Mínima");
 		JButton searchDistanceButton = new JButton("Distância entre nós");
+		JButton bFSButton = new JButton ("Busca em Largura");
 
 		plotGraphButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -117,11 +116,20 @@ class CreateG{
 				newGraph.resetGraph();
 			}
 		});
+		bFSButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String originNodeName = JOptionPane.showInputDialog(null, "Nó de origem", "Torrhen Stark");
+				newGraph.findNodebyName(originNodeName).bFS();;
+				newGraph.resetGraph();
+			}
+			
+		});
 
 
 		panel.add(plotGraphButton);
 		panel.add(minimumTreeButton);
 		panel.add(searchDistanceButton);
+		panel.add(bFSButton);
 
 		JFrame mainWindow = new JFrame("TF EDA 2");
 		mainWindow.add(panel);
