@@ -58,6 +58,10 @@ public class Node{
 		return this.visited;
 	}
 
+	public void setNotVisited(){
+		this.visited = false;
+	}
+
 	public void markVisited(){
 		this.visited = true;
 	}

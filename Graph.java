@@ -57,36 +57,45 @@ class Graph{
 		}
 		return false;
 	}	
-	private boolean searchOnStack(Node end, Stack<Node> stack){
-		for(Node node: stack ){
-			if(node == end){
-				return true;
+	public int calculateDistance(ArrayList<Edge> history){
+		Edge node = history.get(history.size() - 1);
+		int distance = 0;
+		while(node.getSource() != null){
+			distance++;
+			Node originNode = node.getSource();
+			for(Edge temp: history){
+				if(originNode == temp.getTarget()){
+					node = temp;
+					break;
+				}
 			}
 		}
-		return false;
+		return distance;
 	}
 	public int distanceBetweenNodes(Node origin, Node end){
-		//realizo uma busca em largura e a cada largura incrementar um ao contador
-		//caso eu retorne para o primeriro nó a contagem é zerada
-		int count  = 0;
+		if(origin == null || end == null){return -1;}
+		ArrayList<Edge> history = new ArrayList<Edge>();
+		history.add(new Edge(null,origin,"irrelevant"));
+
 		Stack<Node> stack = new Stack<Node>();
 		stack.push(origin);
 		origin.markVisited();
 		while(!stack.isEmpty()){
 			Node node = stack.pop();
-			if(searchOnStack(end,stack)){break;}
-			count++;
 			for(Edge nodes: node.getNeighbors()){
 				Node neighbor = nodes.getTarget();
-				if(neighbor.hasBeenVisited() == false){
+				if(!neighbor.hasBeenVisited()){
 					neighbor.markVisited();
 					stack.push(neighbor);
+					history.add(new Edge(node,neighbor,"irrelevant"));
+					if(history.get(history.size() -1).getTarget() == end)
+						return calculateDistance(history)-1;
 				}
 			}
 		}
-
 		return 0;
 	}
+
 	//TODO rebuild these methods to the new graph structure
 
 	
@@ -159,6 +168,12 @@ class Graph{
 			}
 		}
 		System.out.println(" ");
+	}
+
+	public void resetGraph(){ // temporary function
+		for(Node node : nodeList){
+			node.setNotVisited();
+		}
 	}
 	/*
 	public void getReversedGraph(){

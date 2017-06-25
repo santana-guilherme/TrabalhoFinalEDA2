@@ -91,7 +91,7 @@ class CreateG{
 		// Simple Menu
 
 		JPanel panel = new JPanel();
-		JButton plotGraphButton = new JButton("Plotar Gráfico");
+		JButton plotGraphButton = new JButton("Plotar Grafo");
 		JButton minimumTreeButton = new JButton("Árvore Mínima");
 		JButton searchDistanceButton = new JButton("Distância entre nós");
 
@@ -103,13 +103,18 @@ class CreateG{
 		minimumTreeButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				newGraph.prim();
+				newGraph.resetGraph();
 			}
 		});
 		searchDistanceButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				int value = newGraph.distanceBetweenNodes(newGraph.findNodebyId(3),newGraph.findNodebyId(0));
-				System.out.printf("Origin node: %s, End node: %s, Distance: %d\n",newGraph.findNodebyId(3).getName(),newGraph.findNodebyId(0).getName(),value);
-
+				String originNodeName = JOptionPane.showInputDialog(null,"Nó origem:","Torrhen Stark");
+				String seekNodeName = JOptionPane.showInputDialog(null,"Nó destino:","Benjen Stark");
+				if(originNodeName != null && seekNodeName != null){
+					int value = newGraph.distanceBetweenNodes(newGraph.findNodebyName(originNodeName),newGraph.findNodebyName(seekNodeName));
+					System.out.printf("Origin node: %s, End node: %s, Distance: %d\n",newGraph.findNodebyName(originNodeName).getName(),newGraph.findNodebyName(seekNodeName).getName(),value);
+				}
+				newGraph.resetGraph();
 			}
 		});
 
