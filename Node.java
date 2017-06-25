@@ -96,43 +96,30 @@ public class Node{
 		System.out.printf("\n");
 	}
 
+
+	*/
+	
 	public void bFS(){
-		System.out.printf("%d ->",this.getNodeId());
+		
+		System.out.println(this.getName());
 		Stack<Node> stack = new Stack<Node>();
 		stack.push(this);
 		this.markVisited();
-
+		
 		while(!stack.empty()){
-
+			
 			Node stackNode = stack.pop();
-			for(Map.Entry<Integer, Node> node: stackNode.neighbors.entrySet()){
-				Node neighborNode = node.getValue();
+			for(int aux=0; aux<stackNode.getNeighbors().size(); aux++){
+				
+				Node neighborNode = stackNode.getNeighbors().get(aux).getTarget();
 				if(neighborNode.hasBeenVisited() == false){
-					neighborNode.markVisited();
 					stack.push(neighborNode);
-					System.out.printf("%d ",neighborNode.getNodeId());
-				}
-			}
-			System.out.printf("|");
-		}
-		System.out.printf("\n");
-	}
-
-
-	public void buscaProfundidadeByGraph(ArrayList<Node> graph){
-		for (int aux=(graph.size()-1); aux>=0; aux--){
-			System.out.printf("%d ",graph.get(aux).getNodeId());
-			graph.get(aux).markVisited();
-			for(Map.Entry<Integer, Node> node: graph.get(aux).neighbors.entrySet()){
-				Node neighborNode = node.getValue();
-				if(neighborNode.hasBeenVisited() == false ){
-					neighborNode.buscaProfundidadeByGraph(graph);
+					neighborNode.markVisited();
+					System.out.println(neighborNode.getName());
 				}
 			}
 		}
 	}
-
-	*/
 	
 	public void buscaProfundidade(){
 		System.out.printf(this.getName());

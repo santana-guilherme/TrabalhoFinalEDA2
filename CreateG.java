@@ -85,8 +85,8 @@ class CreateG{
 		          e.getMessage());
 		 }
 		
-		//testing new nodes search
-		//newGraph.getNodeList().get(0).buscaProfundidade();
+		//testing node bFS
+		newGraph.getNodeList().get(0).bFS();
 		
 		// Simple Menu
 
