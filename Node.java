@@ -1,20 +1,25 @@
-//Undirected grap
 import java.util.*;
+import com.mxgraph.view.mxGraph;
+
 public class Node{
 
 	private int id;
 	private String name;
 	private boolean visited;
-	private Map<Integer ,Node> neighbors;
+	private boolean plotted;
+	private int generation; //the generation he belongs on the family tree
+	private ArrayList <Edge> neighbors;
 
-	public Node(int value){
+	public Node(int value, int generation){
 		setNodeId(value);
+		setGeneration(generation);
 		this.visited = false;
-		neighbors = new HashMap<Integer ,Node>();
+		this.plotted = false;
+		neighbors = new ArrayList<Edge>();
 	}
 
-	public void  addNeighbor(Node node, int weight){
-		neighbors.put(weight,node);
+	public void  addNeighbor(Edge newNeighbor){
+		neighbors.add(newNeighbor);
 	}
 	
 	public String getName() {
@@ -33,8 +38,28 @@ public class Node{
 		return this.id;
 	}
 
+	public int getGeneration() {
+		return generation;
+	}
+
+	public void setGeneration(int generation) {
+		this.generation = generation;
+	}
+	
+	public boolean isPlotted() {
+		return plotted;
+	}
+
+	public void setPlotted(boolean plotted) {
+		this.plotted = plotted;
+	}
+
 	public boolean hasBeenVisited(){
 		return this.visited;
+	}
+
+	public void setNotVisited(){
+		this.visited = false;
 	}
 
 	public void markVisited(){
@@ -42,14 +67,27 @@ public class Node{
 	}
 
 	public void clearNeighborhood(){
-				this.neighbors = new HashMap<Integer, Node>();
+				this.neighbors = new ArrayList <Edge>();
 
 	}
 
-	public Map<Integer ,Node> getNeighbors(){
+	public ArrayList<Edge> getNeighbors(){
 				return neighbors;
 	}
+	
+	public boolean isNeighbor(Node son){
+		
+		for (int i = 0; i<this.neighbors.size(); i++){
+			if ((son.equals(this.neighbors.get(i).getTarget()))){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	//TODO rebuild these methods to the new graph structure
 
+	/*
 	public void showNeighbors(){
 		System.out.printf("%d ->",id);
 		for(Map.Entry<Integer, Node> node : neighbors.entrySet()){
@@ -58,51 +96,60 @@ public class Node{
 		System.out.printf("\n");
 	}
 
-	public void bFS(){
-		System.out.printf("%d ->",this.getNodeId());
+
+	*/
+	
+	public String bFS(){
+		String bfsResult = "BFS:\n"	;
+		bfsResult += String.format("%s, ",this.getName());
 		Stack<Node> stack = new Stack<Node>();
 		stack.push(this);
 		this.markVisited();
-
+		
+		bfsResult += "\n";
 		while(!stack.empty()){
-
+			
+			bfsResult += "\n";
 			Node stackNode = stack.pop();
-			for(Map.Entry<Integer, Node> node: stackNode.neighbors.entrySet()){
-				Node neighborNode = node.getValue();
+			for(int aux=0; aux<stackNode.getNeighbors().size(); aux++){
+				
+				Node neighborNode = stackNode.getNeighbors().get(aux).getTarget();
 				if(neighborNode.hasBeenVisited() == false){
-					neighborNode.markVisited();
 					stack.push(neighborNode);
-					System.out.printf("%d ",neighborNode.getNodeId());
+					neighborNode.markVisited();
+					bfsResult += String.format("%s, ",neighborNode.getName());
 				}
 			}
-			System.out.printf("|");
 		}
-		System.out.printf("\n");
+		return bfsResult;
 	}
-
-	public void buscaProfundidade(){
-		System.out.printf("%s ",this.getName());
+	
+	public String buscaProfundidade(){
+		String dfsResult = "";
+		dfsResult += String.format("%s, ",this.getName());
 		this.markVisited();
-		for(Map.Entry<Integer, Node> node: this.neighbors.entrySet()){
-			Node neighborNode = node.getValue();
+		for(int i =0; i<this.getNeighbors().size(); i++){
+			Node neighborNode = this.getNeighbors().get(i).getTarget();
 			if(neighborNode.hasBeenVisited() == false ){
-				neighborNode.buscaProfundidade();
-			}
-		  }
-	}
-
-	public void buscaProfundidadeByGraph(ArrayList<Node> graph){
-		for (int aux=(graph.size()-1); aux>=0; aux--){
-			System.out.printf("%d ",graph.get(aux).getNodeId());
-			graph.get(aux).markVisited();
-			for(Map.Entry<Integer, Node> node: graph.get(aux).neighbors.entrySet()){
-				Node neighborNode = node.getValue();
-				if(neighborNode.hasBeenVisited() == false ){
-					neighborNode.buscaProfundidadeByGraph(graph);
-				}
+				dfsResult += neighborNode.buscaProfundidade();
 			}
 		}
+		return dfsResult;
 	}
+	
+	public void plotNodesAndItsEdgesByBFS(mxGraph graph, Object defaultParent, int x, int y, ArrayList<Object> plottedNodes){
+		Object plottedNode = graph.insertVertex(defaultParent, null,this.getName(), x, y, 130, 30);
+		this.setPlotted(true);
+		plottedNodes.add(plottedNode);
+		y = y + 70;
+		
+		for (int i =0; i<this.getNeighbors().size(); i++){
+			if (this.getNeighbors().get(i).getTarget().plotted == false){
+				this.getNeighbors().get(i).getTarget().plotNodesAndItsEdgesByBFS(graph, defaultParent, x, y, plottedNodes);
+				x = x + 200;
+			}
+			
+		}
 
-
+	}
 }

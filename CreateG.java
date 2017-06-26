@@ -2,13 +2,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import javax.swing.JOptionPane;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 class CreateG{
 
-	public static void associateAsNeighbors(Node firstNode, Node secondNode, int weight){ // for bi directional graphs
-		firstNode.addNeighbor(secondNode,weight);
-		secondNode.addNeighbor(firstNode,weight);
-	}
 
 	public static void main(String[] args){
 		
@@ -19,14 +21,18 @@ class CreateG{
 		      FileReader arq = new FileReader("Nodes.txt");
 		      BufferedReader lerArq = new BufferedReader(arq);
 		 
-		      String names = lerArq.readLine();
+		      String nodeInfo = lerArq.readLine();
 		      int aux = 0;
-		      while (names != null) {
-		        Node newNode = new Node (aux);
-		        newNode.setName(names);
+		      while (nodeInfo != null) {
+		    	String splittedNodeInfo[] = nodeInfo.split("-");
+		    	//splittedNodeInfo[0] = name
+		    	//splittedNodeInfo[1] = generation
+		        Node newNode = new Node (aux, 0);
+		        newNode.setName(splittedNodeInfo[0]);
+		        newNode.setGeneration(Integer.parseInt(splittedNodeInfo[1]));
 		        newGraph.addNode(newNode); 
 
-		        names = lerArq.readLine();
+		        nodeInfo = lerArq.readLine();
 		        aux++;
 		      }
 		 
@@ -37,6 +43,7 @@ class CreateG{
 		 }
 		
 		//read AdjacencyList to find each neighbor
+		//each line of the adjancency list has the format: targetid.relation-targetid.relation ...
 		try {
 			
 		      FileReader arq = new FileReader("AdjacencyList.txt");
@@ -46,15 +53,27 @@ class CreateG{
 		      int aux = 0;
 		      while (line != null) {
 		    	  
-	    		  String [] neiborNames = line.split("-");
-	    		  
-	    		  for(int aux2=0; aux2<neiborNames.length; aux2++){
-	    			  
-	    			  //find the neighbor by it name, and add it to the adjacency list using weight = 0
-	    			  newGraph.getNodeList().get(aux).addNeighbor(newGraph.findNodebyName(neiborNames[aux2]), 0);
-	    			  
-	    		  }
-	    		  
+		    	  if (!line.trim().equals("")){ //making sure that the line isn't empty
+		    		 
+		    		  String [] neightborIdAndRelation = line.split("-");
+		    		  for(int aux2=0; aux2<neightborIdAndRelation.length; aux2++){
+		    			  
+		    			  String [] neighbor = new String[2]; 
+		    			  neighbor = neightborIdAndRelation[aux2].split("/");
+		    			  //neighbor[0] = neighbor id, 
+		    			  //neighbor[1] = neighbor relation
+
+		    			  Edge newEdge = new Edge(newGraph.findNodebyId(aux),
+		    					  				newGraph.findNodebyId(Integer.parseInt(neighbor[0])),
+		    					  				neighbor[1]);
+		    			  
+		    			  //adding the new edge to the list of neighbor of the node
+		    			  newGraph.findNodebyId(aux).addNeighbor(newEdge);
+		    			  //adding the new edge to the list of edges of the graph
+		    			  newGraph.addEdge(newEdge);
+	
+		    		  }
+		    	  }
 	    		  line = lerArq.readLine();
 	    		  aux++;
 		      }
@@ -66,46 +85,80 @@ class CreateG{
 		          e.getMessage());
 		 }
 		
-		//testing new nodes search
-		newGraph.getNodeList().get(0).buscaProfundidade();
 		
-		JGraphXFrame.createFrame(newGraph);
+		// Simple Menu
 
-		
-		
-		/*
-		
-		Node firstNode = new Node(5);
-		Node secondNode = new Node(7);
-		associateAsNeighbors(firstNode,secondNode,3);
-		Node thirdNode = new Node(10);
-		associateAsNeighbors(secondNode,thirdNode,7);
-		associateAsNeighbors(thirdNode,firstNode,10);
-		Node fourthNode = new Node(15);
-		associateAsNeighbors(fourthNode,firstNode,5);
-		firstNode.showNeighbors();
-		secondNode.showNeighbors();
-		thirdNode.showNeighbors();
-		fourthNode.showNeighbors();
-		associateAsNeighbors(fourthNode,thirdNode,18);
-		Node fifthNode = new Node(3);
-		associateAsNeighbors(fifthNode,fourthNode,9);
-		associateAsNeighbors(fifthNode,thirdNode,6);
-		System.out.println("Busca em Profundidade for secondNode");
-		//secondNode.bFS();
-		//secondNode.buscaProfundidade();
-		//fourthNode.buscaProfundidade();
-		System.out.println(" ");
+		JPanel panel = new JPanel();
+		JButton plotGraphButton = new JButton("Plotar Grafo");
+		JButton minimumTreeButton = new JButton("Árvore Mínima");
+		JButton searchDistanceButton = new JButton("Distância entre nós");
+		JButton bFSButton = new JButton ("Busca em Largura");
+		JButton dFSButton = new JButton("Busca em Profundidade");
 
-		//creating a list of nodes (a graph)
-		Graph firstGraph = new Graph();
-		firstGraph.addNode(firstNode);
-		firstGraph.addNode(secondNode);
-		firstGraph.addNode(thirdNode);
-		firstGraph.addNode(fourthNode);
-		firstGraph.prim();
-		
-		*/
+		plotGraphButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				JGraphXFrame.createFrame(newGraph);
+			}
+		});
+		minimumTreeButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String primPath = newGraph.prim();
+				JOptionPane.showMessageDialog(null,primPath);
+				newGraph.resetGraph();
+			}
+		});
+		searchDistanceButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String originNodeName = JOptionPane.showInputDialog(null,"Nó origem:","Torrhen Stark");
+				String seekNodeName = JOptionPane.showInputDialog(null,"Nó destino:","Benjen Stark");
+				if(originNodeName != null && seekNodeName != null){
+					int value = newGraph.distanceBetweenNodes(newGraph.findNodebyName(originNodeName),newGraph.findNodebyName(seekNodeName));
+					String msg;
+					if(value == -1)
+						msg = "There are no conection between this two nodes";
+					else
+						msg = String.format("Origin node: %s\nEnd node: %s\nDistance: %d\n",originNodeName,seekNodeName,value);
+					JOptionPane.showMessageDialog(null,msg);
+				}
+				newGraph.resetGraph();
+			}
+		});
+		bFSButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String originNodeName = JOptionPane.showInputDialog(null, "Nó de origem", "Torrhen Stark");
+				String msg = newGraph.findNodebyName(originNodeName).bFS();
+				JOptionPane.showMessageDialog(null,msg);
+				newGraph.resetGraph();
+			}
+			
+		});
+		dFSButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String targetNode = JOptionPane.showInputDialog(null,"Nó:", "Torrhen Stark");
+				if(!targetNode.isEmpty()){
+					Node node = newGraph.findNodebyName(targetNode);
+					String dfs = node.buscaProfundidade();
+					JOptionPane.showMessageDialog(null,dfs);
+					newGraph.resetGraph();
+				}else{
+					JOptionPane.showMessageDialog(null,"É necessário inserir o nome de um nó");
+				}
+
+			}
+		});
+
+		panel.add(plotGraphButton);
+		panel.add(minimumTreeButton);
+		panel.add(searchDistanceButton);
+		panel.add(bFSButton);
+		panel.add(dFSButton);
+
+		JFrame mainWindow = new JFrame("TF EDA 2");
+		mainWindow.add(panel);
+		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainWindow.pack();
+		mainWindow.setVisible(true);
+
 	}
 
 }
