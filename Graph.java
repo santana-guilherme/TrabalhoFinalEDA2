@@ -138,32 +138,38 @@ class Graph{
 		if(nodeList.isEmpty()){return null;}
 		String pathMinimumTree = "Prim:\n";
 		ArrayList<Edge> nodes = new ArrayList<Edge>();
+		
+		for(int i = 0; i < nodeList.size(); i++){
+			Node firstNode = nodeList.get(i);
+			if(!firstNode.hasBeenVisited()){
+				firstNode.markVisited();
 
-		Node firstNode = nodeList.get(0);
-		firstNode.markVisited();
+				for(Edge nodeEdges: firstNode.getNeighbors()){
+				nodes.add(nodeEdges);
+				}
 
-		for(Edge nodeEdges: firstNode.getNeighbors()){
-			nodes.add(nodeEdges);
-		}
+				while(!nodes.isEmpty()){
+					int minimumIndex = checkMinimum(nodes);
+					Node minimumCostEndNode = nodes.get(minimumIndex).getTarget();
 
-		while(!nodes.isEmpty()){
-			int minimumIndex = checkMinimum(nodes);
-			Node minimumCostEndNode = nodes.get(minimumIndex).getTarget();
-
-			if(!minimumCostEndNode.hasBeenVisited()){
-				Node minimumCostOriginNode = nodes.get(minimumIndex).getSource();
-				pathMinimumTree += String.format("%s ->%s\n",minimumCostOriginNode.getName(),minimumCostEndNode.getName());
-				minimumCostOriginNode.markVisited();
-				minimumCostEndNode.markVisited();
-				for(Edge node: minimumCostEndNode.getNeighbors()){
-					if(!node.getTarget().hasBeenVisited()){
-						nodes.add(node);
+					if(!minimumCostEndNode.hasBeenVisited()){
+						Node minimumCostOriginNode = nodes.get(minimumIndex).getSource();
+						pathMinimumTree += String.format("%s ->%s\n",minimumCostOriginNode.getName(),minimumCostEndNode.getName());
+						minimumCostOriginNode.markVisited();
+						minimumCostEndNode.markVisited();
+						for(Edge node: minimumCostEndNode.getNeighbors()){
+						if(!node.getTarget().hasBeenVisited()){
+							nodes.add(node);
+						}
+					}
+					}else{
+						nodes.remove(minimumIndex);
 					}
 				}
-			}else{
-				nodes.remove(minimumIndex);
+
 			}
 		}
+
 		pathMinimumTree += " ";
 		return pathMinimumTree;
 	}
