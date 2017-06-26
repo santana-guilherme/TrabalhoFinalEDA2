@@ -126,16 +126,21 @@ class CreateG{
 		bFSButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				String originNodeName = JOptionPane.showInputDialog(null, "Nó de origem", "Torrhen Stark");
-				String msg = newGraph.findNodebyName(originNodeName).bFS();
-				JOptionPane.showMessageDialog(null,msg);
-				newGraph.resetGraph();
+				if(originNodeName != null){
+					String msg = newGraph.findNodebyName(originNodeName).bFS();
+					JOptionPane.showMessageDialog(null,msg);
+					newGraph.resetGraph();			
+				}else{
+						JOptionPane.showMessageDialog(null,"É necessário inserir o nome de um nó");			
+				}
+
 			}
 			
 		});
 		dFSButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				String targetNode = JOptionPane.showInputDialog(null,"Nó:", "Torrhen Stark");
-				if(!targetNode.isEmpty()){
+				if(targetNode != null){
 					Node node = newGraph.findNodebyName(targetNode);
 					String dfs = node.buscaProfundidade();
 					JOptionPane.showMessageDialog(null,dfs);
